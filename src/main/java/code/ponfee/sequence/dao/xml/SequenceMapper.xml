@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="code.ponfee.sequence.dao.mapper.SequenceMapper">
+    <select id="nextRange" statementType="CALLABLE" resultType="map">
+        {
+            CALL prcd_sequence_center (
+                #{seq, mode=IN, jdbcType=VARCHAR},
+                #{size, mode=IN, jdbcType=INTEGER}
+            )
+        }  
+    </select>
+</mapper>
