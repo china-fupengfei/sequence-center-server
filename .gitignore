@@ -20,5 +20,5 @@ out/
 /**/src/main/webapp/WEB-INF/classes/
 
 # Others
-/**/bin/
+/bin/
 /**/.myeclipse
