@@ -25,6 +25,9 @@ public class SequenceDaoImpl implements ISequenceDao {
     public SequenceRange nextRange(String seq, int size) throws SequenceNotFoundException, SequenceIsOverException {
         Map<String, Object> result = mapper.nextRange(seq, size);
 
+        if (result == null) {
+            throw new SequenceNotFoundException(seq + " not found");
+        }
         Long start = (Long) result.get("start");
         Long end = (Long) result.get("end");
         if (start == null || end == null) {
