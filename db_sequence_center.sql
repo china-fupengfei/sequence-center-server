@@ -14,7 +14,7 @@ USE db_sequence_center;
 -- 序列表
 -- ----------------------------
 CREATE TABLE `t_sequence` (
-  `id`            int(11)      NOT NULL AUTO_INCREMENT COMMENT '主键自增ID',
+  `id`             int(11)     NOT NULL AUTO_INCREMENT COMMENT '主键自增ID',
   `seq_name`       varchar(16) NOT NULL                COMMENT '序列名',
   `next_value`     bigint(20)  NOT NULL DEFAULT '1'    COMMENT '下一个序列值',
   `max_value`      bigint(20)  DEFAULT NULL            COMMENT '最大值（为空或小于0时表示无限制）',
@@ -38,9 +38,10 @@ FLUSH PRIVILEGES;
 -- 创建序列存储过程
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `prcd_sequence_center`;
-DELIMITER //
+delimiter // 
 CREATE DEFINER=`db_seq_center`@`%` PROCEDURE `prcd_sequence_center`(IN s_name VARCHAR(50), IN batch_size INT)
 BEGIN
+
   SET @sv:=NULL, @ev:=NULL, @lr:=NULL;
 
   UPDATE t_sequence SET 
@@ -71,9 +72,9 @@ BEGIN
   WHERE seq_name=s_name;
   
   SELECT @sv `start`, @ev-1 `end`, @lr startPeriod, DATE_ADD(@lr, INTERVAL @ps-1 SECOND) endPeriod;
-END
-//
-DELIMITER
+
+END// 
+delimiter ;
 
 
 -- 测试数据：
