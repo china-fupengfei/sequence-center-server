@@ -30,7 +30,7 @@ public class DatabaseSequenceServiceImpl implements ISequenceService {
     private static final Map<String, Sequence> SEQUENCE_HOLDER = new ConcurrentHashMap<>();
     private static final int MAX_SIZE = 1000;
 
-    private @Value("${sequence.range.size:10000}") int seqRangeSize;
+    private @Value("${sequence.range.size:100}") int seqRangeSize;
     private @Resource ISequenceDao sequenceDao;
 
     @Override
