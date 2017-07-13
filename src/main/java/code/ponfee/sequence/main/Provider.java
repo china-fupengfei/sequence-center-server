@@ -11,7 +11,7 @@ public class Provider {
     private static ClassPathXmlApplicationContext context;
 
     public static void main(String[] args) {
-        context = new ClassPathXmlApplicationContext(new String[] { "META-INF/spring/sequence-center-provider.xml" });
+        context = new ClassPathXmlApplicationContext(new String[] { "META-INF/spring/*.xml" });
         context.start();
         System.out.println("==========================序列生成中心已启动=========================");
         while (true) {
