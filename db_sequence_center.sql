@@ -40,6 +40,7 @@ FLUSH PRIVILEGES;
 DROP PROCEDURE IF EXISTS `prcd_sequence_center`;
 DELIMITER // 
 CREATE DEFINER=`db_seq_center`@`%` PROCEDURE `prcd_sequence_center`(IN s_name VARCHAR(50), IN batch_size INT)
+-- CREATE DEFINER=`db_seq_center`@`%` PROCEDURE `prcd_sequence_center`(IN s_name VARCHAR(50), IN batch_size INT, OUT start_val BIGINT, OUT end_val BIGINT, OUT begin_period datetime, OUT end_period datetime)
 BEGIN
 
   SET @sv:=NULL, @ev:=NULL, @lr:=NULL;
@@ -72,8 +73,9 @@ BEGIN
         ELSE @lr:=last_reset 
       END
   WHERE seq_name=s_name;
-  
+
   SELECT @sv `start`, @ev-1 `end`, @lr startPeriod, DATE_ADD(@lr, INTERVAL @ps-1 SECOND) endPeriod;
+  -- SELECT @sv, @ev-1, @lr, DATE_ADD(@lr, INTERVAL @ps-1 SECOND) INTO start_val, end_val, begin_period, end_period;
 
 END// 
 DELIMITER ;
@@ -85,3 +87,6 @@ DELIMITER ;
 
 -- 调用方式：
     -- CALL prcd_sequence_center('seq_user', 9);
+
+    /*CALL prcd_sequence_center('seq_user', 9, @s_val, @e_val, @begin_period, @end_period);
+    SELECT @s_val, @e_val, @begin_period, @end_period;*/
