@@ -1,18 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xmlns:p="http://www.springframework.org/schema/p"
-    xmlns:context="http://www.springframework.org/schema/context"
-    xmlns:aop="http://www.springframework.org/schema/aop" 
-    xmlns:tx="http://www.springframework.org/schema/tx"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
-
-    <!-- 激活annotation功能 -->
-    <context:annotation-config />
-    <context:spring-configured />
+    xmlns:p="http://www.springframework.org/schema/p" 
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="sequenceDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
@@ -44,33 +34,12 @@
     </bean>
 
     <!-- mybatis文件配置，扫描所有mapper文件 -->
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
-        p:dataSource-ref="sequenceDataSource" p:configLocation="classpath:/mybatis.xml"
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" 
+        p:dataSource-ref="sequenceDataSource" p:configLocation="classpath:/mybatis-conf.xml"
         p:mapperLocations="classpath*:code/ponfee/sequence/dao/xml/*.xml" p:typeAliasesPackage="code.ponfee.sequence.model" />
 
     <!-- spring与mybatis整合配置，扫描所有dao -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
         p:basePackage="code.ponfee.sequence.dao.mapper" p:sqlSessionFactoryBeanName="sqlSessionFactory" />
 
-    <!-- 数据库事务配置-->
-    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" p:dataSource-ref="sequenceDataSource" />
-    <tx:advice id="txAdvice" transaction-manager="txManager">
-        <tx:attributes>
-            <tx:method name="query*" read-only="true" />
-            <tx:method name="list*" read-only="true" />
-            <tx:method name="get*" read-only="true" />
-            <tx:method name="select*" read-only="true" />
-            <tx:method name="load*" read-only="true" />
-            <tx:method name="find*" read-only="true" />
-            <tx:method name="search*" read-only="true" />
-            <tx:method name="read*" read-only="true"/>
-            <tx:method name="assert*" read-only="true"/>
-            <tx:method name="check*" read-only="true"/>
-            <tx:method name="*" propagation="REQUIRED" rollback-for="Exception" />
-        </tx:attributes>
-    </tx:advice>
-    <aop:config>
-        <aop:pointcut id="pointcut" expression="execution(public * code.ponfee.sequence.service.impl.*.*(..))" />
-        <aop:advisor advice-ref="txAdvice" pointcut-ref="pointcut" />
-    </aop:config>
 </beans>

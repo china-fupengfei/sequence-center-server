@@ -64,7 +64,8 @@ public class DatabaseSequenceServiceImpl implements ISequenceService {
     }
 
     @Override
-    public SequenceRange nextRange(String name, int size) throws SequenceIsOverException, SequenceNotFoundException {
+    public SequenceRange nextRange(String name, int size) 
+        throws SequenceIsOverException, SequenceNotFoundException {
         if (StringUtils.isBlank(name)) {
             throw new IllegalArgumentException("seq name not allow blank");
         }

@@ -65,14 +65,14 @@ public class TestDatabaseSequence {
     @Test
     public void testNextValue() throws InterruptedException {
         AtomicBoolean flag = new AtomicBoolean(true);
-        for (int j = 0; j < 10; j++) {
+        for (int j = 0; j < 50; j++) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     long key;
-                    while (true && flag.get()) {
+                    while (flag.get()) {
                         try {
-                            key = service.nextValue("seq_order");
+                            key = service.nextValue("seq_user");
                             if (!SET.add(key)) System.err.println(key);
                         } catch (SequenceIsOverException | SequenceNotFoundException e) {
                             e.printStackTrace();
@@ -85,8 +85,8 @@ public class TestDatabaseSequence {
         Thread.sleep(10000);
         // 237205 (step:1000)
         flag.set(false);
+        Thread.sleep(5000);
         System.out.println(SET.size());
-        Thread.sleep(1000);
     }
 
     @Test
@@ -99,7 +99,7 @@ public class TestDatabaseSequence {
                     while (true && flag.get()) {
                         Long key;
                         try {
-                            key = service.nextSerial("seq_order");
+                            key = service.nextSerial("seq_user");
                             if (!SET.add(key)) System.err.println(key);
                         } catch (SequenceIsOverException | SequenceNotFoundException e) {
                             e.printStackTrace();
@@ -121,11 +121,6 @@ public class TestDatabaseSequence {
     public void testNextRange() throws InterruptedException, SequenceIsOverException, SequenceNotFoundException {
         SequenceRange r = service.nextRange("seq_order", 100);
         System.out.println(r.current());
-    }
-
-    @Test
-    public void testNextRange2() throws SequenceIsOverException, SequenceNotFoundException {
-        System.out.println(service.nextValue("seq_order"));
     }
 
 }
